@@ -1,34 +1,25 @@
 #include <stdio.h>
 #define INF 9999
-#define MAX 100
+#define N 10
 
 int main() {
-    int n, g[MAX][MAX], d[MAX], v[MAX], s, i, j, c, min, u;
+    int n, g[N][N], d[N], v[N] = {0}, i, j, s, u, min;
     printf("Vertices: "); scanf("%d", &n);
-    printf("Adjacency matrix (%d for no edge):\n", INF);
-    for (i=0;i<n;i++)for(j=0;j<n;j++)scanf("%d",&g[i][j]);
+    printf("Adjacency matrix (%d=no edge):\n", INF);
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) scanf("%d", &g[i][j]);
     printf("Source: "); scanf("%d", &s);
 
-    for(i=0;i<n;i++){d[i]=g[s][i];v[i]=0;}
-    d[s]=0;v[s]=1;
+    for (i = 0; i < n; i++) d[i] = g[s][i];
+    d[s] = 0; v[s] = 1;
 
-    for(c=1;c<n;c++){
-        min=INF;u=-1;
-        for(i=0;i<n;i++) if(!v[i]&&d[i]<min){min=d[i];u=i;}
-        if(u==-1)break;
-        v[u]=1;
-        for(i=0;i<n;i++)
-            if(!v[i]&&g[u][i]!=INF&&d[u]+g[u][i]<d[i])
-                d[i]=d[u]+g[u][i];
+    for (i = 1; i < n; i++) {
+        min = INF;
+        for (j = 0; j < n; j++) if (!v[j] && d[j] < min) min = d[u = j];
+        v[u] = 1;
+        for (j = 0; j < n; j++)
+            if (!v[j] && d[u] + g[u][j] < d[j]) d[j] = d[u] + g[u][j];
     }
 
-    printf("\nShortest distances from %d:\n", s);
-    for(i=0;i<n;i++) printf("To %d : %d\n", i, d[i]);
+    printf("\nShortest distances:\n");
+    for (i = 0; i < n; i++) printf("To %d: %d\n", i, d[i]);
 }
-
-
-
-
-
-
-
